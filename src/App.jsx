@@ -103,7 +103,7 @@ export default function App() {
     );
   };
 
- /*  const FeedbackForm = () => {
+  /*  const FeedbackForm = () => {
     const [feedbackType, setFeedbackType] = useState("");
     const [comments, setComments] = useState("");
     const [displayComments, setDisplayComments] = useState(false);
@@ -166,12 +166,58 @@ export default function App() {
   }; */
 
   const FeedbackForm = () => {
+    const [currentFeebackType, setFeedbackType] = useState("");
+    const [comments, setComments] = useState("");
+    const [preview, setPreview] = useState(false);
+    const handleFeedbackType = (event) => {
+      const value = event.target.value;
+      setFeedbackType(value);
+      setPreview(false);
+      setComments("");
+    };
+
+    const handleSubmitEvent = (event) => {
+      event.preventDefault();
+      setPreview(true);
+    };
+
     return (
       <div>
-      <h1>Feedback Form</h1>
+        <h1>Feedback Form</h1>
+        <form onSubmit={handleSubmitEvent}>
+          <label htmlFor="feedback-type">Feedback Type:</label>
+          <select id="feedback-type" onChange={handleFeedbackType}>
+            <option value="">--Select Feedback Type--</option>
+            <option value="Compliment">Compliment</option>
+            <option value="Complaint">Complaint</option>
+            <option value="Suggestion">Suggestion</option>
+            <option value="Other">Other</option>
+          </select>
+          <br /> <br />
+          {currentFeebackType && (
+            <div>
+              <label>Comments</label>
+              <textarea
+                rows="5"
+                cols="50"
+                value={comments} // this attribute is very important to reset the textarea
+                onChange={(event) => setComments(event.target.value)}
+              />
+            </div>
+          )}
+          <br />
+          <button type="submit">Submit</button>
+        </form>
+
+        {preview && (
+          <div>
+            <p>{currentFeebackType}</p>
+            <p>{comments}</p>
+          </div>
+        )}
       </div>
-    )
-  }
+    );
+  };
   return (
     <main>
       <FoodSurvey />
